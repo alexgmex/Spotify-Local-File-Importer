@@ -1,6 +1,12 @@
-from pytube import YouTube
-url1_future_sounds = "https://www.youtube.com/watch?v=dzQoliuqCfE"
-video = YouTube(url1_future_sounds)
+import pytube as pt
 
-stream = video.streams.filter(only_audio=True).first()
-stream.download(filename=f"{video.title}.mp3")
+playlist_url = "https://youtube.com/playlist?list=PLsWudFQO5VJPmtHlTmwSi3rO6jhcdvbIG&si=TZQ-G60U-le-ewdb"
+playlist = pt.Playlist(playlist_url)
+
+for i, video in enumerate(playlist.videos, 1):
+    try:
+        audio_stream = video.streams.filter(only_audio=True).first()
+        print(f"Downloading {i}/{playlist.length}: {video.title}...")
+        audio_stream.download("Songs/")
+    except:
+        print(f"Error while downloading {video.title}. Skipping...")
